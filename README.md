@@ -6,8 +6,10 @@ git clone git@github.com:blitzin2023/blitz-config.git
 ```
 
 - 编辑启动脚本：
-Ubuntu 20.04.5 LTS (Focal Fossa): ~/.bash_profile
-CentOS Linux 7: ~/.bashrc
+系统|启动脚本
+----|--------
+Ubuntu 20.04.5 LTS (Focal Fossa) ~/.bash_profile
+CentOS Linux 7|~/.bashrc
 增加以下代码段：
 
 ```bash
