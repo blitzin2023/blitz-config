@@ -1,0 +1,15 @@
+snippet pr "kernel debug"
+printk("kyland:%s:%d${0}\n", __FUNCTION__, __LINE__);
+endsnippet
+
+snippet talk "talk"
+talk is ${1:cheap}, show me the ${2:code}.
+endsnippet
+
+snippet if "if (...)"
+if (${1:true}) {
+	${VISUAL}
+}
+endsnippet
+
+
