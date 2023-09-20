@@ -64,5 +64,5 @@ nmap <C-\>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 nmap <C-\>q :cs find t struct <C-R>=expand("<cword>") {<CR><CR>
 
 """ MRU配置
-let MRU_Use_Current_Window = 1
-let MRU_Window_Height = 20
+"let MRU_Use_Current_Window = 1
+let MRU_Window_Height = 25
