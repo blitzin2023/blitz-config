@@ -1,6 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/work/git/kernel_rk3588/kernel/android'
 let g:netrw_dirhist_2='/work/git/kernel_rk3588/kernel'
 let g:netrw_dirhist_3='/work/git/kernel_rk3588/kernel/android'
 let g:netrw_dirhist_4='/home/centos/.vim/UltiSnips'
+let g:netrw_dirhist_5='/work/git/kernel_rk3568/kernel-ok3568c'
+let g:netrw_dirhist_6='/home/centos/git/intewellrtre/source'

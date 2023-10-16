@@ -2,6 +2,10 @@ snippet pr "kernel debug"
 printk("kyland:%s:%d${0}\n", __FUNCTION__, __LINE__);
 endsnippet
 
+snippet prub "uboot debug"
+printf("${0}%d --> %lu ms\n", __LINE__, get_timer(time));
+endsnippet
+
 snippet talk "talk"
 talk is ${1:cheap}, show me the ${2:code}.
 endsnippet
