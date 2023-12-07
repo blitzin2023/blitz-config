@@ -5,6 +5,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'yegappan/taglist'
 Plug 'airblade/vim-gitgutter'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 call plug#end()
 
 """ Tlist
