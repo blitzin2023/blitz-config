@@ -42,20 +42,30 @@ From people using z.lua:
 ## Examples
 
 ```bash
-z foo       # cd to most frecent dir matching foo
-z foo bar   # cd to most frecent dir matching foo and bar
-z -r foo    # cd to the highest ranked dir matching foo
-z -t foo    # cd to most recently accessed dir matching foo
-z -l foo    # list matches instead of cd
-z -c foo    # restrict matches to subdirs of $PWD
-z -e foo    # echo the best match, don't cd
-z -i foo    # cd with interactive selection
-z -I foo    # cd with interactive selection using fzf
-z -b foo    # cd to the parent directory starting with foo
+z foo        # cd to most frecent dir matching foo
+z foo bar    # cd to most frecent dir matching foo and bar
+z -r foo     # cd to the highest ranked dir matching foo
+z -t foo     # cd to most recently accessed dir matching foo
+z -l foo     # list matches instead of cd
+z -c foo     # restrict matches to subdirs of $PWD
+z -e foo     # echo the best match, don't cd
+z -i foo     # cd with interactive selection
+z -I foo     # cd with interactive selection using fzf
+z -b foo     # cd to the parent directory starting with foo
+z -b foo bar # replace foo with bar in cwd and cd there
 ```
 
 
 ## Install
+
+- Fig (works with all shells)
+
+  [Fig](https://fig.io) adds apps, shortcuts, and autocomplete to your existing terminal.
+
+
+    Install `z.lua` in just one click.
+
+  <a href="https://fig.io/plugins/other/z.lua" target="_blank"><img src="https://fig.io/badges/install-with-fig.svg" /></a>
 
 - Bash:
 
@@ -89,7 +99,7 @@ z -b foo    # cd to the parent directory starting with foo
 
       eval "$(lua /path/to/z.lua --init zsh)"
 
-  Options like "enhanced" and "once" can be used after `--init` too. It can also be initialized from "skywind3000/z.lua" with your zsh plugin managers (antigen / oh-my-zsh).
+  Options like "enhanced", "once" and "fzf" can be used after `--init` too. It can also be initialized from "skywind3000/z.lua" with your zsh plugin managers (antigen / oh-my-zsh).
 
   **NOTE**: for wsl-1 users, `lua-filesystem` must be installed.
 
@@ -159,7 +169,12 @@ z -b foo    # cd to the parent directory starting with foo
 - set `$_ZL_ECHO` to 1 to display new directory name after cd.
 - set `$_ZL_MATCH_MODE` to 1 to enable enhanced matching.
 - set `$_ZL_NO_CHECK` to 1 to disable path validation, use `z --purge` to clean
-- set `$_ZL_HYPHEN` to 1 to treat hyphon (-) as a normal character not a lua regexp keyword.
+- set `$_ZL_HYPHEN` to 0 to treat a hyphen (`-`) as a
+  [lua regexp special character](https://www.lua.org/pil/20.2.html),
+  set `$_ZL_HYPHEN` to 1 to treat a hyphen as a normal character.
+  If `$_ZL_HYPHEN` is not set or if it is set to `auto`, z.lua tries to treat `-`
+  as a lua regexp special character first. If there are no matches, z.lua tries
+  again, this time treating `-` as a normal character.
 - set `$_ZL_CLINK_PROMPT_PRIORITY` change clink prompt register priority (default 99).
 
 ## Aging
@@ -176,15 +191,11 @@ To z.lua, a directory that has low ranking but has been accessed recently will q
 
 ## Default Matching
 
-By default, z.lua uses default matching algorithm similar to the original z.sh. Paths must be match all of the regexes in order.
+By default, `z.lua` uses default matching algorithm similar to the original `z.sh`. Paths must be match all of the regexes in order.
 
 - cd to a directory contains foo:
 
       z foo
-
-- cd to a directory ends with foo:
-
-      z foo$
 
 - use multiple arguments:
 
@@ -194,6 +205,15 @@ By default, z.lua uses default matching algorithm similar to the original z.sh. 
       30   /home/user/mail/inbox
 
   `"z in"` would cd into `/home/user/mail/inbox` as the higher weighted entry. However you can pass multiple arguments to z.lua to prefer a different entry. In the above example, `"z w in"` would then change directory to `/home/user/work/inbox`.
+
+- use regexes:
+
+  ```bash
+  z foo$   # cd to a directory ends with foo
+  z %d     # cd to a directory that contains a digit
+  ```
+
+  Unlike `z.sh`, `z.lua` uses the [Lua regular expression syntax](https://www.lua.org/pil/20.2.html).
 
 ## Enhanced Matching
 
@@ -319,6 +339,7 @@ New option `"-b"` can quickly go back to a specific parent directory in bash ins
 - **(No argument)**: `cd` into the project root, the project root the nearest parent directory with `.git`/`.hg`/`.svn` in it.
 - **(One argument)**: `cd` into the closest parent starting with keyword, if not find, go to the parent containing keyword.
 - **(Two arguments)**: replace the first value with the second one (in the current path).
+  If simple substitution does not work, falls back to fuzzily replacing path components.
 
 Let's start by aliasing `z -b` to `zb`:
 
@@ -338,6 +359,11 @@ Let's start by aliasing `z -b` to `zb`:
 # substitute jekyll with ghost
 ~/github/jekyll/test$ zb jekyll ghost
   => cd ~/github/ghost/test
+
+# same as above, but fuzzy
+~/github/jekyll/test$ zb jek gh
+  => z ~/github/ gh /test
+    => cd ~/github/ghost/test  # Assuming that's the most frecent match
 ```
 
 Backward jumping can also be used with `$_ZL_ECHO` option (echo $PWD after cd), which makes it possible to combine them with other tools without actually changing the working directory (eg. ``ls `zb git` ``). 
@@ -366,6 +392,12 @@ Bash is not as powerful as zsh/fish, so we introduced fzf-completion for bash, i
 
 ```bash
 eval "$(lua /path/to/z.lua --init bash enhanced once echo fzf)"
+```
+
+If you want use fzf completion in zsh, initalize your z.lua and append `fzf` keyword after `--init`:
+
+```zsh
+eval "$(lua /path/to/z.lua --init zsh enhanced once echo fzf)"
 ```
 
 Then press `<tab>` after `z xxx`:
@@ -419,6 +451,14 @@ At last, press `<enter>` to accept or `<ESC>` to give up.
 
 Remember to enable the [enhanced matching](#enhanced-matching) algorithm, the current working directory can be skipped with it.
 
+
+## Ranger integration
+To add a `:z` command to the [`ranger` file manager], copy the `ranger_zlua.py` file to `~/.config/ranger/plugins/`.
+You can then use `:z foo`, `:z -b foo`, etc. from ranger. Use `:z -h` for help.
+
+[`ranger` file manager]: https://github.com/ranger/ranger
+
+To define additional commands (`:zb` for example) in ranger, you can put `alias zb z -b` into `~/.config/ranger/rc.conf`.
 
 
 ## Tips

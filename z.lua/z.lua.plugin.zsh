@@ -21,7 +21,11 @@ fi
 
 export _ZL_FZF_FLAG=${_ZL_FZF_FLAG:-"-e"}
 
-eval "$($ZLUA_EXEC $ZLUA_SCRIPT --init zsh once enhanced)"
+if [[ -z "$_ZL_ZSH_NO_FZF" ]]; then
+	eval "$($ZLUA_EXEC $ZLUA_SCRIPT --init zsh once enhanced)"
+else
+	eval "$($ZLUA_EXEC $ZLUA_SCRIPT --init zsh once enhanced fzf)"
+fi
 
 if [[ -z "$_ZL_NO_ALIASES" ]]; then
   alias zz='z -i'
