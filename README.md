@@ -29,3 +29,5 @@ so ~/.blitzin/kernel.vim
 ```bash
 ln -s ~/.blitzin/vim/ ~/.vim
 ```
+
+若z命令不生效，手动执行`. ~/.blitzin/bashrc`，根据报错进行调试
