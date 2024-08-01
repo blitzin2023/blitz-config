@@ -1,0 +1,1 @@
+source ~/.blitzin/common.vim
