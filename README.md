@@ -39,6 +39,11 @@ source ~/.blitzin/all.vim
 ln -s ~/.blitzin/vim/ ~/.vim
 ```
 
+链接ultisnips目录
+```
+ln -s ~/.blitzin/vim/UltiSnips/ mysnippets
+```
+
 调试
 ----
 
@@ -57,4 +62,11 @@ tar zxf lua-5.4.7.tar.gz
 cd lua-5.4.7
 make all test
 make install
+```
+
+Ubuntu通过apt命令安装依赖
+
+```
+sudo apt install lua5.1
+sudo apt install exuberant-ctags
 ```

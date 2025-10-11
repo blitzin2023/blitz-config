@@ -12,7 +12,7 @@ let Tlist_Show_One_File=1     "不同时显示多个文件的tag，只显示当�
 let Tlist_Exit_OnlyWindow=1   "如果taglist窗口是最后一个窗口，则退出vim  
 let Tlist_Use_Right_Window=1	"左侧显示tlist窗口
 "let Tlist_Auto_Open=1	"启动vim，自动打开tlist窗口
-let Tlist_Ctags_Cmd="/usr/local/bin/ctags" "将taglist与ctags关联 
+let Tlist_Ctags_Cmd="/usr/bin/ctags" "将taglist与ctags关联 
 let Tlist_WinWidth=50
 
 let Tlist_GainFocus_On_ToggleOpen=1
@@ -37,8 +37,10 @@ syntax enable
 syntax on
 
 """vim-gitgutter
-nmap [c <Plug>(GitGutterPrevHunk)
-nmap ]c <Plug>(GitGutterNextHunk)
+"按[c跳转到上一个修改点
+nmap [c <Plug>(GitGutterPrevHunk) 
+"按]c跳转到下一个修改点
+nmap ]c <Plug>(GitGutterNextHunk) 
 highlight GitGutterAdd    ctermfg=blue
 highlight GitGutterChange ctermfg=green
 highlight GitGutterDelete ctermfg=red
@@ -49,7 +51,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>" " 使用 tab 切换下一个触发点
 let g:UltiSnipsJumpBackwardTrigger="<S-tab>" "使用 shift+tab 切换上一个触发点
 let g:UltiSnipsEditSplit="vertical" " 使用 UltiSnipsEdit 命令时垂直分割屏幕
-let g:UltiSnipsSnippetDirectories=["UltiSnips","mysnippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips","mysnippets"]echo globpath(&rtp, "mysnippets")
 
 """ cscope配置
 nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
